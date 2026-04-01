@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bunny World</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #d4f8d4, #b6f0c2);
+      color: #2e4d2e;
+      font-family: Arial;
+      text-align: center;
+      padding-top: 100px;
+      overflow: hidden;
+    }
+
+    input {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #a3d9a5;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background: #6ecb8b;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #57b977;
+    }
+
+    #content {
+      display: none;
+      font-size: 32px;
+      font-weight: bold;
+      min-height: 140px;
+      white-space: pre-line;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glitch {
+      animation: glitch 0.2s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(2px, -2px); }
+      25% { transform: translate(-2px, 2px); }
+      50% { transform: translate(2px, 2px); }
+      75% { transform: translate(-2px, -2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    #finalImage {
+      width: 400px;
+      margin-top: 20px;
+      border-radius: 20px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.6s ease;
+    }
+
+    #finalImage.show {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Welcome to bunny world…<br>where nothing is random… not even you. 🐰</h1>
+
+<div id="form">
+  <p>Enter your name</p>
+  <input type="text" id="nameInput">
+  <button onclick="start()">Enter</button>
+</div>
+
+<div id="content"></div>
+
+<script>
+
+function start() {
+  let name = document.getElementById("nameInput").value;
+  document.getElementById("form").style.display = "none";
+
+  let content = document.getElementById("content");
+  content.style.display = "flex";
+
+  let lines = [
+    "hey buddy… what’s up.",
+    `bunny was expecting you, ${name}... 🐰`,
+    "...",
+    "this world feels loud… but somehow still empty.",
+    "maybe that’s why even a small bunny can hear your thoughts.",
+    "이 세상은 시끄러운 것 같은데… 이상하게도 비어 있어.",
+    "그래서인지… 작은 토끼인 나도 네 생각이 들려. 🐰",
+    "...",
+    "I wanted to tell you something…",
+    "just don’t leave in the middle… okay?",
+    "This is not a normal thing...",
+    "...",
+    "⚠️",
+
+    `시끄러운 세상에서…
+두 사람이 만났어.`,
+    `얼굴도 모르고…
+기대도 없이…`,
+    "그냥 늦은 밤 이야기만 했어.",
+    "근데 어느 순간…",
+    `네 말들이
+나한테 더 특별하게 느껴졌어.`,
+    "너는 내 하루랑 건강을 물어보고…",
+    "나는 괜찮은 척 했지만…",
+    "사실은 좋았어. 🐰",
+    `그리고 그게…
+너만 그런 거였어.`,
+    `조금씩…
+나도 모르게…`,
+    "이상한 감정이 생겼어.",
+    "말하고 싶었는데…",
+    "그냥… 말 못 했어.",
+    `이 얘기…
+오래 생각했어.`,
+    "직접 말 못 해서…",
+    "짧게 써봤어.",
+    "읽어줄래?",
+    "안녕…",
+    "조금 웃길 수도 있는데…",
+    "너가 점점 중요해졌어.",
+    "큰 이유는 없고…",
+    "그냥 작은 순간들 때문이야.",
+    "네 말이 계속 생각나고…",
+    "너랑 이야기하는 게 좋았어.",
+    "이게 뭔지 잘 모르겠지만…",
+    "나한테는 진짜였어.",
+    "....."
+  ];
+
+  let finalLines = [
+    "아직도 읽고 있어? 😭",
+    "ㅋㅋㅋㅋ got you",
+    "APRIL FOOL 😂",
+    "야… 진짜 다 읽었네",
+    "귀여운 바보야 🐰✨",
+    "Wait… one last thing…",
+    "⚠️",
+    `다음엔…
+토끼를 너무 쉽게 믿지 마. 🐰👀`
+  ];
+
+  let i = 0;
+  let storyStart = lines.indexOf("⚠️");
+
+  function typeText(text, callback) {
+    let index = 0;
+    content.innerHTML = "";
+
+    function type() {
+      if (index < text.length) {
+        content.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(type, 60);
+      } else {
+        setTimeout(callback, 2200);
+      }
+    }
+
+    type();
+  }
+
+  function showLines() {
+    if (i < lines.length) {
+
+      if (i > storyStart) {
+        let group = lines.slice(i, i + 4).join("\n\n");
+
+        typeText(group, () => {
+          i += 4;
+          showLines();
+        });
+
+      } else {
+        typeText(lines[i], () => {
+          i++;
+          showLines();
+        });
+      }
+
+    } else {
+      startGlitch();
+    }
+  }
+
+  function startGlitch() {
+    content.classList.add("glitch");
+    content.innerHTML = "Something is wrong...";
+
+    setTimeout(() => {
+      content.classList.remove("glitch");
+      showFinal();
+    }, 3000);
+  }
+
+  function showFinal() {
+    let j = 0;
+
+    function nextFinal() {
+      if (j < finalLines.length) {
+        typeText(finalLines[j], () => {
+          j++;
+          nextFinal();
+        });
+      } else {
+        showImage();
+      }
+    }
+
+    nextFinal();
+  }
+
+  function showImage() {
+    content.innerHTML = `
+      <img id="finalImage" src="bunny.jpg">
+    `;
+
+    let img = document.getElementById("finalImage");
+
+    img.onload = () => {
+      setTimeout(() => {
+        img.classList.add("show");
+      }, 200);
+    };
+  }
+
+  showLines();
+}
+
+</script>
+
+</body>
+</html>
